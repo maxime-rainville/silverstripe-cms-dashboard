@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "oclif",
+    "oclif-typescript"
+  ],
+  "rules": {
+    "valid-jsdoc": "off",
+    "unicorn/no-abusive-eslint-disable": "off"
+  }
+}

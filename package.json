@@ -1,0 +1,70 @@
+{
+  "name": "silverstripe-cms-dashboard",
+  "description": "Fetch dashboard data for Silverstripe CMS",
+  "version": "0.0.0",
+  "author": "Maxime Rainville @maxime-rainville",
+  "bin": {
+    "silverstripe-cms-dashboard": "./bin/run"
+  },
+  "bugs": "https://github.com/maxime-rainville/silverstripe-cms-dashboard/issues",
+  "dependencies": {
+    "@oclif/command": "^1.8.0",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-help": "^3.2.2",
+    "@octokit/rest": "^18.0.12",
+    "tslib": "^1.14.1",
+    "silverstripe-cms-meta": "^0.0.5",
+    "travis-ci": "^2.2.0",
+    "typed-rest-client": "^1.8.1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.26.0",
+    "@oclif/test": "^1.2.8",
+    "@types/chai-spies": "^1.0.3",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.17.51",
+    "chai": "^4.3.0",
+    "chai-spies": "^1.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-oclif": "^3.1.0",
+    "eslint-config-oclif-typescript": "^0.1.0",
+    "globby": "^10.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/maxime-rainville/silverstripe-cms-dashboard",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "silverstripe-cms-dashboard",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "maxime-rainville/silverstripe-cms-dashboard",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "watch": "mocha --watch --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md",
+    "fix-lint": "eslint . --ext .ts --config .eslintrc"
+  },
+  "types": "lib/index.d.ts"
+}
