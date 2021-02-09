@@ -42,10 +42,18 @@ export class GithubClient {
     ))
   }
 
-  public getTags(owner: string, repo: string) {
-    return this.throttle.throttle(() => this.octokit.repos.listTags({owner, repo}))
-    .then(({data}: RestEndpointMethodTypes['repos']['listTags']['response']) => (
-      data.map(({name}) => name)
-    ))
+  public getTags(owner: string, repo: string, page = 0): Promise<string[]> {
+    return this.throttle.throttle(() => this.octokit.repos.listTags({owner, repo, page}))
+    .then(({data}: RestEndpointMethodTypes['repos']['listTags']['response']) => {
+      if (data.length === 0) {
+        return Promise.resolve([])
+      }
+
+      const tags = data
+      .map(({name}) => name)
+      .filter(tag => tag.match(/^\d+\.\d+\.\d+$/))
+
+      return this.getTags(owner, repo, page + 1).then(restOfTags => tags.concat(restOfTags))
+    })
   }
 }

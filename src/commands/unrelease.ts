@@ -1,18 +1,19 @@
 import {Command, flags} from '@oclif/command'
 import * as Config from '@oclif/config'
-import {Octokit, RestEndpointMethodTypes} from '@octokit/rest'
+import {Octokit} from '@octokit/rest'
 import {data as ssData} from 'silverstripe-cms-meta'
 import {Throttle} from '../lib/throttle'
-import {isReleaseBranch} from '../lib/helpers/is-relase-branch'
-import {sortBranch} from '../lib/helpers/sort-branch'
-import {isComparable} from '../lib/helpers/is-comparable'
 import {CompareEntry} from '../types/compare-entry'
 import {removeNulls} from '../lib/helpers/remove-nulls'
+import {GithubClient} from '../lib/github-client'
+import {latestTagForBranch} from '../lib/helpers/latest-tag-for-branch'
 
 export default class Unrelease extends Command {
   private octokit = new Octokit({ });
 
   private throttle = new Throttle(5);
+
+  private github: GithubClient = new GithubClient();
 
   static description = 'Display Silverstripe module that have outstanding commits to release'
 
@@ -51,6 +52,8 @@ export default class Unrelease extends Command {
 
     this.throttle = new Throttle(throttle)
 
+    this.github = new GithubClient(this.octokit, this.throttle)
+
     // Fetch merges UP from GitHub
     const dataFetches = this.getRepos(supportedOnly)
     // Filter module by name
@@ -65,8 +68,11 @@ export default class Unrelease extends Command {
       const repo = matches[2]
 
       // Fetch branch data for this repo
-      return this.getBranches(org, repo)
-      .then(branches => this.findMergeUps(org, repo, branches))
+      return Promise.all([this.github.getBranches(org, repo), this.github.getTags(org, repo)])
+      .then(resolvedPRomises => {
+        const [branches, tags] = resolvedPRomises
+        return this.findMergeUps(org, repo, branches, tags)
+      })
       .then(compares => compares.filter(removeNulls))
       .then(compares => ({repo: entry.repo, compares}))
       .catch(() => {
@@ -102,54 +108,17 @@ export default class Unrelease extends Command {
   }
 
   /**
-   * Get a list of branches matching our release approach sorting from the lowest version te the highest version.
-   * @param owner
-   * @param repo
-   */
-  public getBranches(owner: string, repo: string) {
-    return this.throttle.throttle(() => this.octokit.repos.listBranches({owner, repo}))
-    .then(({data}: RestEndpointMethodTypes['repos']['listBranches']['response']) => (
-      data.map(({name}) => name)
-      .filter(isReleaseBranch)
-      .sort(sortBranch)
-    ))
-  }
-
-  public getTags(owner: string, repo: string) {
-    return this.throttle.throttle(() => this.octokit.repos.listTags({owner, repo}))
-    .then(({data}: RestEndpointMethodTypes['repos']['listTags']['response']) => (
-      data.map(({name}) => name)
-    ))
-  }
-
-  /**
    * Given a list of branches, find all the ones needing to2 be merge up.
    * @param owner
    * @param repo
    * @param branches Branches need to be sorted
+   * @param tags
    */
-  public findMergeUps(owner: string, repo: string, branches: string[]) {
-    // Initialise the first comparasion
-    let head = branches.shift()
-    if (!head) {
-      return []
-    }
-    let base: string|undefined
-    const comparePromises = []
-
-    // Keep looping until we don't have any branch left
-    base = branches.shift()
-    while (base) {
-      // Check if `head` is meant to be merge into `base`
-      if (isComparable(head, base)) {
-        // If it is ask GitHub to compare them, to see if there's anf outstanding commits
-        comparePromises.push(this.compare(owner, repo, head, base))
-      }
-
-      // The base becomes the HEAD for the next pass
-      head = base
-      base = branches.shift()
-    }
+  public findMergeUps(owner: string, repo: string, branches: string[], tags: string[]) {
+    const comparePromises = branches.map(branch => {
+      const tag = latestTagForBranch(branch, tags)
+      return this.compare(owner, repo, branch, tag)
+    })
 
     return Promise.all(comparePromises)
   }

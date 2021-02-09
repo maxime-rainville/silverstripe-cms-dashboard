@@ -28,8 +28,31 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`silverstripe-cms-dashboard builds [COMMAND]`](#silverstripe-cms-dashboard-builds-command)
 * [`silverstripe-cms-dashboard hello [FILE]`](#silverstripe-cms-dashboard-hello-file)
 * [`silverstripe-cms-dashboard help [COMMAND]`](#silverstripe-cms-dashboard-help-command)
+* [`silverstripe-cms-dashboard mergeup [FILE]`](#silverstripe-cms-dashboard-mergeup-file)
+* [`silverstripe-cms-dashboard unrelease [FILE]`](#silverstripe-cms-dashboard-unrelease-file)
+
+## `silverstripe-cms-dashboard builds [COMMAND]`
+
+Fetch build status for silverstripe module
+
+```
+USAGE
+  $ silverstripe-cms-dashboard builds [COMMAND]
+
+OPTIONS
+  -d, --domain=domain         [default: com] Travis domain to target: org or com
+  -f, --failed                Only display failed build.
+  -h, --help                  show CLI help
+  -o, --output=(pretty|json)  [default: pretty] Control the output format
+  -t, --token=token           Travis token
+  -v, --version               show CLI version
+  --verbose                   Print out debug statement.
+```
+
+_See code: [src/commands/builds.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.0/src/commands/builds.ts)_
 
 ## `silverstripe-cms-dashboard hello [FILE]`
 
@@ -67,4 +90,48 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `silverstripe-cms-dashboard mergeup [FILE]`
+
+Display Silverstripe module that have outstanding commits to merge up
+
+```
+USAGE
+  $ silverstripe-cms-dashboard mergeup [FILE]
+
+OPTIONS
+  -c, --commits               Show commits
+  -f, --filter=filter         Filter by module name
+  -h, --help                  show CLI help
+  -o, --output=(pretty|json)  [default: pretty] Control the output format
+  -t, --token=token           GitHub Token
+  -v, --version               show CLI version
+  --needMergeOnly             Only show module and branches with outstanding commit to merge up.
+  --supportedOnly             Limit results to supported module
+  --throttle=throttle         [default: 5] Number of concurent API requests that can be run.
+```
+
+_See code: [src/commands/mergeup.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.0/src/commands/mergeup.ts)_
+
+## `silverstripe-cms-dashboard unrelease [FILE]`
+
+Display Silverstripe module that have outstanding commits to release
+
+```
+USAGE
+  $ silverstripe-cms-dashboard unrelease [FILE]
+
+OPTIONS
+  -c, --commits               Show commits
+  -f, --filter=filter         Filter by module name
+  -h, --help                  show CLI help
+  -o, --output=(pretty|json)  [default: pretty] Control the output format
+  -t, --token=token           GitHub Token
+  -v, --version               show CLI version
+  --needMergeOnly             Only show module and branches with outstanding commit to merge up.
+  --supportedOnly             Limit results to supported module
+  --throttle=throttle         [default: 5] Number of concurent API requests that can be run.
+```
+
+_See code: [src/commands/unrelease.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.0/src/commands/unrelease.ts)_
 <!-- commandsstop -->
