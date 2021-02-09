@@ -1,6 +1,8 @@
 
 const nines = 99999999
 
+const zero = '0.0.0'
+
 type VersionArray = [number, number, number]
 
 /**
@@ -32,7 +34,7 @@ function tagSort(as: VersionArray, bs: VersionArray): number {
  * @param branch
  * @param tags
  */
-export function latestTagForBranch(branch: string, tags: string[]): string {
+export function latestTagForBranch(branch: string, tags: string[]): string|undefined {
   let matches: VersionArray
 
   if (['master', 'main'].includes(branch)) {
@@ -53,5 +55,11 @@ export function latestTagForBranch(branch: string, tags: string[]): string {
     return topTag
   }, [0, 0, 0])
 
-  return topTag.join('.')
+  const topTagStr = topTag.join('.')
+
+  if (topTagStr === zero && !tags.includes(zero)) {
+    return undefined
+  }
+
+  return topTagStr
 }

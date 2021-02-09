@@ -117,10 +117,11 @@ export default class Unrelease extends Command {
   public findMergeUps(owner: string, repo: string, branches: string[], tags: string[]) {
     const comparePromises = branches.map(branch => {
       const tag = latestTagForBranch(branch, tags)
-      return this.compare(owner, repo, branch, tag)
+
+      return tag ? this.compare(owner, repo, branch, tag) : undefined
     })
 
-    return Promise.all(comparePromises)
+    return Promise.all(comparePromises.filter(removeNulls))
   }
 
   /**
