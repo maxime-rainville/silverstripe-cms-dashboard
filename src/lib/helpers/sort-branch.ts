@@ -1,8 +1,8 @@
 /**
-   * Combare two branch names
-   * @param a
-   * @param b
-   */
+ * Combare two branch names
+ * @param a
+ * @param b
+ */
 export function sortBranch(a: string, b: string) {
   // Two branches are equal
   if (a === b) {
