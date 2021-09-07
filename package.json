@@ -1,7 +1,7 @@
 {
   "name": "silverstripe-cms-dashboard",
   "description": "Fetch dashboard data for Silverstripe CMS",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "Maxime Rainville @maxime-rainville",
   "bin": {
     "silverstripe-cms-dashboard": "./bin/run"

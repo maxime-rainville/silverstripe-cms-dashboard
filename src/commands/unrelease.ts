@@ -133,9 +133,19 @@ export default class Unrelease extends Command {
    */
   public compare(owner: string, repo: string, head: string, base: string) {
     return this.throttle.throttle(() => this.octokit.repos.compareCommits({owner, repo, base, head}))
-    .then(({data: {ahead_by, commits, html_url}}) => ({
-      base, head, ahead_by, commits, html_url,
-    }))
+    .then(({data: {ahead_by, commits, html_url}}) => {
+      // Remove maintenance commits and merge commits
+      const filteredCommits = commits.filter((commit: any) => (
+        commit.parents.length < 2 && !commit.commit.message.startsWith('MNT')
+      ))
+      return {
+        base,
+        head,
+        ahead_by: ahead_by + filteredCommits.length - commits.length,
+        commits: filteredCommits,
+        html_url,
+      }
+    })
     .catch(error => {
       this.error(error)
       return null
@@ -161,7 +171,7 @@ export default class Unrelease extends Command {
           // Skip this branch because there's nothing to merge
           return
         }
-        // Show branch comparaison
+        // Show branch comparison
         this.log(`* ${compare.base}...${compare.head}: \ta head by ${compare.ahead_by}\t ${compare.html_url}`)
 
         // Show commit

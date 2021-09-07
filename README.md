@@ -19,7 +19,7 @@ $ npm install -g silverstripe-cms-dashboard
 $ silverstripe-cms-dashboard COMMAND
 running command...
 $ silverstripe-cms-dashboard (-v|--version|version)
-silverstripe-cms-dashboard/0.0.1 linux-x64 node-v10.19.0
+silverstripe-cms-dashboard/0.0.2 linux-x64 node-v10.19.0
 $ silverstripe-cms-dashboard --help [COMMAND]
 USAGE
   $ silverstripe-cms-dashboard COMMAND
@@ -52,7 +52,7 @@ OPTIONS
   --verbose                   Print out debug statement.
 ```
 
-_See code: [src/commands/builds.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.1/src/commands/builds.ts)_
+_See code: [src/commands/builds.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.2/src/commands/builds.ts)_
 
 ## `silverstripe-cms-dashboard hello [FILE]`
 
@@ -72,7 +72,7 @@ EXAMPLE
   hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.1/src/commands/hello.ts)_
+_See code: [src/commands/hello.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.2/src/commands/hello.ts)_
 
 ## `silverstripe-cms-dashboard help [COMMAND]`
 
@@ -111,7 +111,7 @@ OPTIONS
   --throttle=throttle         [default: 5] Number of concurent API requests that can be run.
 ```
 
-_See code: [src/commands/mergeup.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.1/src/commands/mergeup.ts)_
+_See code: [src/commands/mergeup.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.2/src/commands/mergeup.ts)_
 
 ## `silverstripe-cms-dashboard unrelease [FILE]`
 
@@ -133,5 +133,5 @@ OPTIONS
   --throttle=throttle         [default: 5] Number of concurent API requests that can be run.
 ```
 
-_See code: [src/commands/unrelease.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.1/src/commands/unrelease.ts)_
+_See code: [src/commands/unrelease.ts](https://github.com/maxime-rainville/silverstripe-cms-dashboard/blob/v0.0.2/src/commands/unrelease.ts)_
 <!-- commandsstop -->
