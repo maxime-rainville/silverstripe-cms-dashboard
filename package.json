@@ -1,7 +1,7 @@
 {
   "name": "silverstripe-cms-dashboard",
   "description": "Fetch dashboard data for Silverstripe CMS",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Maxime Rainville @maxime-rainville",
   "bin": {
     "silverstripe-cms-dashboard": "./bin/run"
@@ -11,6 +11,7 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.2",
+    "@octokit/plugin-throttling": "^3.5.2",
     "@octokit/rest": "^18.0.12",
     "silverstripe-cms-meta": "^0.1.0",
     "travis-ci": "^2.2.0",

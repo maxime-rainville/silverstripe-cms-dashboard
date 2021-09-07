@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import * as Config from '@oclif/config'
-import {Octokit, RestEndpointMethodTypes} from '@octokit/rest'
+import {RestEndpointMethodTypes} from '@octokit/rest'
+import {ThrottledOctoKit as Octokit} from '../lib/throttled-octokit'
 import {data as ssData} from 'silverstripe-cms-meta'
 import {Throttle} from '../lib/throttle'
 import {isReleaseBranch} from '../lib/helpers/is-relase-branch'
@@ -10,6 +11,7 @@ import {CompareEntry} from '../types/compare-entry'
 import {removeNulls} from '../lib/helpers/remove-nulls'
 
 export default class Mergeup extends Command {
+  // @ts-ignore
   private octokit = new Octokit({ });
 
   private throttle = new Throttle(5);
@@ -44,6 +46,7 @@ export default class Mergeup extends Command {
 
     // Init the GitHub Rest client
     if (token || process.env.GITHUB_TOKEN) {
+      // @ts-ignore
       this.octokit = new Octokit({
         auth: token ?? process.env.GITHUB_TOKEN,
       })
