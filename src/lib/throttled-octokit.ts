@@ -7,9 +7,9 @@ class MyOctoKit extends Octokit.plugin(throttling) {
     super({
       ...options,
       throttle: {
-        onRateLimit: () => {
+        onRateLimit: (retryAfter: number, options: any) => {
           // Retry twice after hitting a rate limit error, then give up
-          if (options.request.retryCount <= 10) {
+          if (options.request && options.request.retryCount <= 2) {
             return true
           }
           throw new Error('We have hit the rate limit and retried 10 times.')

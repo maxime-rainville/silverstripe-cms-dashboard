@@ -46,7 +46,9 @@ export function latestTagForBranch(branch: string, tags: string[]): string|undef
   }
 
   const topTag = tags
-  .map(tag => tag.split('.').map(v => parseInt(v, 10)) as VersionArray)
+  .map(tag => tag.split('.').map(v => {
+    return parseInt(v, 10)
+  }) as VersionArray)
   .reduce((topTag, prospectiveTag) => {
     if (tagSort(matches, prospectiveTag) > 0 && tagSort(prospectiveTag, topTag) > 0) {
       // If the prospective tag is smaller than the branch tag, but bigger than the current topTag

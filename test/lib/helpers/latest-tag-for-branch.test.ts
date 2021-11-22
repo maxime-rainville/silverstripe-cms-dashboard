@@ -31,4 +31,8 @@ describe('latestTagForBranch', () => {
   it('0.0.0 in tag list', () => {
     expect(latestTagForBranch('0', testTags.concat('0.0.0'))).to.equal('0.0.0')
   })
+  it('Next minor over 10', () => {
+    expect(latestTagForBranch('4.10', [...testTags, '4.9.0', '4.10.0'])).to.equal('4.10.0')
+    expect(latestTagForBranch('4', [...testTags, '4.9.0', '4.10.0'])).to.equal('4.10.0')
+  })
 })
